@@ -1,3 +1,8 @@
+# Recall-n-Rails Miner
+- **Under Construction**
+- This is under development and testing. These files will change a **LOT**.
+- If you are not willing to take changes, you should wait to try this!
+
 # Razor2Rail
 
 - **Rail Creation Video**
