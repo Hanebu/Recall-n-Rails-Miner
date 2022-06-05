@@ -63,7 +63,7 @@ while not dead
    #CAST ELEMENTAL
    if 'useSummons' == 1
         #if we don't have an elemental we cast one.
-        while followers < 2
+   while followers == usingPackiesAmount or followers < 4
             if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
                 if mana > 40
                     if timer '_eleCastTimer' > 7000
@@ -272,7 +272,7 @@ while not dead
             endif                    
         elseif diffweight >= 40
             wait 150
-            overhead "USING TOOL"
+            #overhead "USING TOOL"
             hotkey 'Use item in Hand'
             wait 250
             setvar! handled 0
@@ -474,9 +474,6 @@ while not dead
                 overhead "::: Recalled Out :::" 15
                 script 'M_BankController'
             endif
-            #settimer '_harvest' 0
-            #settimer '_checkweight' 0
-            #setvar! handled 1
         elseif insysmsg 'worn out your tool'
             overhead '::: You broke your pickaxe :::'
             if rhandempty
@@ -484,13 +481,7 @@ while not dead
                 setvar! handled 1
                 settimer '_harvest' 0
                 settimer '_checkweight' 0
-            endif
-        elseif insysmsg 'equipped for any serious chopping'
-            //TODO
-            overhead '::: Whoops where did your axe go!? :::'
-            settimer '_harvest' 0
-            settimer '_checkweight' 0
-            setvar! handled 1
+            endif      
             #make sure this is longer than a world save by a bit.
         elseif timer '_harvest' > gumpOrLagTimeout
             overhead "::: Entering Watch Mode :::" 55
