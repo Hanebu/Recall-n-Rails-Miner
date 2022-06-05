@@ -21,6 +21,10 @@
 # creating list to clear other lists to and back
 createlist tempPackieList
 
+if not listexists emptyPackieList or not listexists fullPackieList
+    script 'Miner_Settings'
+endif
+
 overhead "::: bank controller :::"
 clearsysmsg 
 
@@ -86,8 +90,7 @@ while list tempPackieList > 0
 endwhile
 
 
-#select run to do based on random 
-#recall and save which script we will do
+# recall to the bank
 if findtype Runebook backpack as theBook
     wait 2000
     if bankRune == 16            
@@ -150,7 +153,7 @@ if findtype Runebook backpack as theBook
         waitforgump any
         wait 250
         gumpresponse 29
-    elseif bankRune == 14             
+    elseif bankRune == 4             
         dclick theBook
         waitforgump any
         wait 250
