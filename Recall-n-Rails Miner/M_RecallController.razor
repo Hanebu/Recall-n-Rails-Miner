@@ -58,13 +58,13 @@ random railCount
 if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 20 and counttype SpidersSilk 'backpack' > 20  
     #if we don't have an elemental we cast one before leaving.
     if useSummons == 1
-        while followers < 2
+        while followers == usingPackiesAmount and followers < 4
         if mana > 40 or timer '_recastElemental' > 300000
                 hotkey "Water Elemental"
             wait 7000
             endif
         endwhile
-    settimer '_recastElemental' 0
+        settimer '_recastElemental' 0
     endif
     
     #turn on tracking before we leave town
