@@ -1,81 +1,70 @@
+// *****
+// * Original by Xyio
+// * Modified by Hanebu
+// *****
+
+// Welcome message
 overhead ' ::: loading settings :::'
-#----USE RAILS?--- (0 if off, 1 is on)
-# If set to 0 you will need to manually move.
+
+// *********************************
+// * ↓↓↓ Adjust those settings ↓↓↓ *
+
+// If set to 0 you will need to manually move.
 setvar useRails 1
 
-# Set this to the number of runes dedicated to harvesting
-# they need to be the first runes in your book
-setvar railCount 2
+// Set this to the number of runes dedicated to harvesting
+// they need to be the first runes in your book
+setvar railCount 3
 
-# Set bank rune number
-setvar bankRune 4
-
-# Delay before movment attempts
-# increase this if validation of rails fails
+// Delay before movment attempts, increase this if validation of rails fails. Default is 250
 setvar movementDelay 250
 
-# Max length of time before the script considers 
-# heavy lag or a captcha is up. (default 12000)
-# must be less than harvestTimeout
+// Max length of time before the script considers heavy lag or a captcha is up.
+// Must be less than harvestTimeout. Default is 8000
 setvar gumpOrLagTimeout 8000
 
-# Will you be using a pack animal?
-# The script will pause while you
-# Smelt and unload the packy to your pack
+// Set to 1 if you are using Packhorse(s), set to 0 if you are not using Packhorse(s)
 setvar packyService 1
 
-# Restock agent you will be using
-# to get regs / pickaxes from bank
-setvar restoAgent 1
+// If packyService = 1, set how many Packhorses you are using
+setvar usingPackiesAmount 1
 
-# Organizer agent we will be using
-# to move ore to pack animal
+// Organizer agent we will be using to move ore to pack animal
 setvar packDumpAgent 17
 
-# Organizer agent we will be using
-# to move ore to bank
-setvar organAgent 1
-
-#do we use tracking skill? 0 for no, 1 for yes.
+// Do you want to use Tracking? 0 = No, 1 = Yes
 setvar useTracking 1
 
-#do we use summons for protection? 0 for no, 1 for yes.
+// Do you want to use Summons? 0 = No, 1 = Yes
 setvar useSummons 1
 
-# -- Should not need to edit below --
+// * ↑↑↑ Adjust those settings ↑↑↑ *
+// *********************************
 
-# State of packy waiting at blacksmith
-setvar waiting_FP 0
+// ****************************************
+// * ↓↓↓ DO NOT MODIFY THE CODE BELOW ↓↓↓ *
+// ****************************************
 
-#variable to hold information on which
-#random rune and script we will use
+// Variable to hold information on which random rune and script we will use
 setvar theScript 0
 
-#var used to decide if we have summoned a new follower
+// Variable used to decide if we have summoned a new follower
 setvar canSummon 1
 
-#variable to let the script know if we failed a restock (not at bank or bank not open)
-setvar tryedRestock 0
-
-#variable of what packy dump we are on
+// Variable of what packy dump we are on
 setvar packieDumps 0
 
-# Variable to make our location
-# persist across errors/server down 
+// Variable to make our location persist across errors/server down 
 setvar xListEntry 0
 setvar yListEntry 0
-# --------------- packie stuff -------------
-# lists used by scripts to move things to packies
-removelist emptyPackieList
-removelist fullPackieList
 
+// Lists used by scripts to move things to packies
+removelist emptyPackieList
 createlist emptyPackieList
+removelist fullPackieList
 createlist fullPackieList
 
-# variable of how many packies we will be using
-setvar usingPackiesAmount 3
-
-# populate the packie lists
+// Populate the packie lists
 if packyService > 0
     while list emptyPackieList < usingPackiesAmount
         overhead 'Select Packie(s)'
