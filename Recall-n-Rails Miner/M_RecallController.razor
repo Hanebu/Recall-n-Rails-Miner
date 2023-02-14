@@ -1,19 +1,16 @@
-#########################################
-# █████ █████             ███           #
-#░░███ ░░███             ░░░            #
-# ░░███ ███   █████ ████ ████   ██████  #
-#  ░░█████   ░░███ ░███ ░░███  ███░░███ #
-#   ███░███   ░███ ░███  ░███ ░███ ░███ #
-#  ███ ░░███  ░███ ░███  ░███ ░███ ░███ #
-# █████ █████ ░░███████  █████░░██████  #
-#░░░░░ ░░░░░   ░░░░░███ ░░░░░  ░░░░░░   #
-#              ███ ░███                 #
-#             ░░██████                  #
-#              ░░░░░░                   #
-#########################################
+// *****
+// * Original by Xyio
+// * Modified by Hanebu
+// *****
 
-# ID's for items used
-########################
+// ****************************************
+// * ↓↓↓ DO NOT MODIFY THE CODE BELOW ↓↓↓ *
+// ****************************************
+
+// Welcome message
+overhead "::: recall controller :::"
+
+// IDs for items used
 @setvar! Runebook 8901
 @setvar! RecallRune 7956
 @setvar! BlackPearl 3962
@@ -24,39 +21,34 @@
 @setvar! Nightshade 3976
 @setvar! SpidersSilk 3981
 @setvar! SulfurousAsh 3980
-########################
 
-overhead "::: recall controller :::"
-
-#Randomly cycle through runes and call the coorisponding script for that location
-#We then wait our required "Just traveled" timer and start the script
+// Randomly cycle through runes and call the coorisponding script for that location
+// We then wait our required <Just traveled> timer and start the script
 if not timerexists 'recentlyTraveled'
     createtimer 'recentlyTraveled'
     settimer 'recentlyTraveled' 0
 endif
-#timer to monitor how long before we try to cast our second elemental.
-#it is dangerous to let all elementals despawn.
+
+// Timer to monitor how long before we try to cast our second elemental.
+// It is dangerous to let all elementals despawn.
 if not timerexists '_recastElemental'
     createtimer '_recastElemental'
     settimer '_recastElemental' 999999
 endif
 
-#reset our rail lists and get ready for next run
+// Reset our rail lists and get ready for next run
 removelist firstRun
 removelist moveList
 removelist xCoord
 removelist yCoord
 overhead "::: script has been reset :::" 77
 
-##variable to let the script know if we failed a restock (not at bank or bank not open)
-#setvar! tryedRestock 0
-
+// Get random number for finding next recall spot
 random railCount
 
-#make sure we have enough regs to do another run! (recall and summons)
-# bloodmoss: 3963 blackpearl: 3962 mandrakeroot: 3966 spiderssilk: 3968
+// Check that we have enough reags to do another run (recall and summons)
 if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 20 and counttype SpidersSilk 'backpack' > 20  
-    #if we don't have an elemental we cast one before leaving.
+    // If we dont have an elemental we cast one before leaving.
     if useSummons == 1
         while followers == usingPackiesAmount and followers < 4
         if mana > 40 or timer '_recastElemental' > 300000
@@ -67,9 +59,8 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
         settimer '_recastElemental' 0
     endif
     
-    #turn on tracking before we leave town
-    if useTracking == 1    
-        #clearsysmsg 
+    // Turn on tracking
+    if useTracking == 1 and not findbuff 'Tracking'
         gumpclose 4267467659
         while not insysmsg 'What do you wish to track' or insysmsg 'you must wait a few moments' 
             skill 'Tracking'
@@ -78,15 +69,14 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
         waitforgump 4267467659
         gumpresponse 6 4267467659
         waitforgump 4267467659
-        while not insysmsg 'You will receive'
+        while not findbuff 'Tracking'
             gumpresponse 6 4267467659
             pause 200
         endwhile
         gumpclose 4267467659
     endif
     
-    #select run to do based on random 
-    #recall and save which script we will do
+    // Select run to do based on random. Recall and save which script we will do
     if findtype Runebook backpack as book
         overhead "found the runebook"
         if insysmsg "Random: 16"            
@@ -204,10 +194,10 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
         endif     
     endif
 
-    #wait while recently traveled
+    // Wait while recently traveled
     while timer 'recentlyTraveled' < 60000
-        wait 1000
-        #Scan for PK
+        wait 600
+        // Scan for PK
         if insysmsg "Now tracking:"
             overhead "::: RED FOUND :::" 55
             overhead "::: RECALLING NOW :::" 33
@@ -217,7 +207,7 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
                 targettype Runebook backpack
                 overhead "::: Recalled Out :::" 15
                 wait 1000
-                script 'M_'
+                script 'M_BankController'
             endif
             if findtype RecallRune backpack
                 targettype RecallRune backpack
@@ -226,7 +216,7 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
                 script 'M_BankController'
             endif
         endif
-        #Give overhead 
+        // Display travel timer overhead
         if timer 'recentlyTraveled' > 59000
             overhead '1 seconds' 99
         elseif timer 'recentlyTraveled' > 58000
@@ -342,6 +332,10 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
             endif
             if skill 'Hiding' > 0
                 skill 'Hiding'
+            else 
+                cast 'Invisibility'
+                waitfortarget 8000
+                target 'self'
             endif
         elseif timer 'recentlyTraveled' > 4000 
             overhead '56 seconds' 56 
@@ -354,110 +348,116 @@ if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 
         endif   
     endwhile
         
-    #run our script based on the variable we saved earlier
-    #you must name these exactly as you have in your razor list    
+    // Run script based on the variable we saved earlier.
+    // You must name these exactly as you have in your razor list.
+    overhead theScript 55
     if findtype Runebook backpack as runeBook
         getlabel runeBook runeBookLabel
         if "M_Rune_Book_1" in runeBookLabel
-            overhead runeBookLabel
-        
             if theScript == 1
-                script 'M_Book_1_Rail_1'
-            elseif theScript == 2           
-                script 'M_Book_1_Rail_2'
-            elseif theScript == 3            
-                script 'M_Book_1_Rail_3'
-            elseif theScript == 4            
-                script 'M_Book_1_Rail_4'
-            elseif theScript == 5            
-                script 'M_Book_1_Rail_5'
-            elseif theScript == 6            
-                script 'M_Book_1_Rail_6'
-            elseif theScript == 7           
-                script 'M_Book_1_Rail_7'
-            elseif theScript == 8           
-                script 'M_Book_1_Rail_8'
-            elseif theScript == 9            
-                script 'M_Book_1_Rail_9'
-            elseif theScript == 10            
-                script 'M_Book_1_Rail_10'
-            elseif theScript == 11           
-                script 'M_Book_1_Rail_11'
-            elseif theScript == 12            
-                script 'M_Book_1_Rail_12'
-            elseif theScript == 13            
-                script 'M_Book_1_Rail_13'
-            elseif theScript == 14            
-                script 'M_Book_1_Rail_14'
-            elseif theScript == 15            
-                script 'M_Book_1_Rail_15'
-            elseif theScript == 16            
-                script 'M_Book_1_Rail_16'
+                overhead '::: loading rail :::'
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_1'
+            elseif theScript == 2
+                overhead '::: loading rail :::'
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_2'
+            elseif theScript == 3      
+                overhead '::: loading rail :::'      
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_3'
+            elseif theScript == 4     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_4'
+            elseif theScript == 5     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_5'
+            elseif theScript == 6      
+                overhead '::: loading rail :::'      
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_6'
+            elseif theScript == 7    
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_7'
+            elseif theScript == 8      
+                overhead '::: loading rail :::'     
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_8'
+            elseif theScript == 9     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_9'
+            elseif theScript == 10    
+                overhead '::: loading rail :::'        
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_10'
+            elseif theScript == 11     
+                overhead '::: loading rail :::'      
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_11'
+            elseif theScript == 12    
+                overhead '::: loading rail :::'        
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_12'
+            elseif theScript == 13    
+                overhead '::: loading rail :::'        
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_13'
+            elseif theScript == 14     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_14'
+            elseif theScript == 15     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_15'
+            elseif theScript == 16     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_One\M_Book_1_Rail_16'
             endif 
         endif
     endif    
     if findtype Runebook backpack as runeBook
         getlabel runeBook runeBookLabel
         if "M_Rune_Book_2" in runeBookLabel
-            overhead runeBookLabel
-        
             if theScript == 1
-                script 'M_Book_2_Rail_1'
-            elseif theScript == 2           
-                script 'M_Book_2_Rail_2'
-            elseif theScript == 3            
-                script 'M_Book_2_Rail_3'
-            elseif theScript == 4            
-                script 'M_Book_2_Rail_4'
-            elseif theScript == 5            
-                script 'M_Book_2_Rail_5'
-            elseif theScript == 6            
-                script 'M_Book_2_Rail_6'
-            elseif theScript == 7           
-                script 'M_Book_2_Rail_7'
-            elseif theScript == 8           
-                script 'M_Book_2_Rail_8'
-            elseif theScript == 9            
-                script 'M_Book_2_Rail_9'
-            elseif theScript == 10            
-                script 'M_Book_2_Rail_10'
-            elseif theScript == 11           
-                script 'M_Book_2_Rail_11'
-            elseif theScript == 12            
-                script 'M_Book_2_Rail_12'
-            elseif theScript == 13            
-                script 'M_Book_2_Rail_13'
-            elseif theScript == 14            
-                script 'M_Book_2_Rail_14'
-            elseif theScript == 15            
-                script 'M_Book_2_Rail_15'
-            elseif theScript == 16            
-                script 'M_Book_2_Rail_16'
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_1'
+            elseif theScript == 2         
+                overhead '::: loading rail :::'  
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_2'
+            elseif theScript == 3         
+                overhead '::: loading rail :::'   
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_3'
+            elseif theScript == 4        
+                overhead '::: loading rail :::'    
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_4'
+            elseif theScript == 5         
+                overhead '::: loading rail :::'   
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_5'
+            elseif theScript == 6       
+                overhead '::: loading rail :::'     
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_6'
+            elseif theScript == 7      
+                overhead '::: loading rail :::'     
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_7'
+            elseif theScript == 8     
+                overhead '::: loading rail :::'      
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_8'
+            elseif theScript == 9     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_9'
+            elseif theScript == 10     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_10'
+            elseif theScript == 11    
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_11'
+            elseif theScript == 12    
+                overhead '::: loading rail :::'        
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_12'
+            elseif theScript == 13    
+                overhead '::: loading rail :::'        
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_13'
+            elseif theScript == 14   
+                overhead '::: loading rail :::'         
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_14'
+            elseif theScript == 15   
+                overhead '::: loading rail :::'         
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_15'
+            elseif theScript == 16     
+                overhead '::: loading rail :::'       
+                script 'XYIOs\M_Book_Two\M_Book_2_Rail_16'
             endif 
         endif
     endif
 else
-    if tryedRestock == 0
-        say 'bank'
-        overhead "::: insufficent regs :::"
-        overhead "::: set restock higher :::"
-        #restock if our regs are below this threshold
-        restock 1
-        waitfortarget 3000
-        target 'self'
-        while queued
-        endwhile
-        setvar! tryedRestock 1
-    else
-        overhead "::: not enough regs to restock :::" 15
-        cast "recall"
-        waitfortarget 3000
-        if findtype 'Runebook' backpack
-            targettype 'Runebook' backpack
-        endif
-        if findtype RecallRune backpack
-            targettype RecallRune backpack
-        endif
-        setvar! tryedRestock 0
-    endif
+    overhead "::: not enough regs to start :::" 15
 endif
