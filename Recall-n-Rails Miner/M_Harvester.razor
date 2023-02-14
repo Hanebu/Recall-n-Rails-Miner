@@ -1,33 +1,20 @@
-#########################################
-# █████ █████             ███           #
-#░░███ ░░███             ░░░            #
-# ░░███ ███   █████ ████ ████   ██████  #
-#  ░░█████   ░░███ ░███ ░░███  ███░░███ #
-#   ███░███   ░███ ░███  ░███ ░███ ░███ #
-#  ███ ░░███  ░███ ░███  ░███ ░███ ░███ #
-# █████ █████ ░░███████  █████░░██████  #
-#░░░░░ ░░░░░   ░░░░░███ ░░░░░  ░░░░░░   #
-#              ███ ░███                 #
-#             ░░██████                  #
-#              ░░░░░░                   #
-#########################################
+// *****
+// * Original by Xyio
+// * Modified by Hanebu
+// *****
 
-# ID's for items used
-########################
-@setvar! Runebook 8901
-@setvar! RecallRune 7956
-@setvar! BlackPearl 3962
-@setvar! Bloodmoss 3963
-@setvar! Garlic 3972
-@setvar! Ginseng 3973
-@setvar! MandrakeRoot 3974
-@setvar! Nightshade 3976
-@setvar! SpidersSilk 3981
-@setvar! SulfurousAsh 3980
-########################
+// ****************************************
+// * ↓↓↓ DO NOT MODIFY THE CODE BELOW ↓↓↓ *
+// ****************************************
 
+// Welcome message
 overhead "::: harvester :::"
 
+// IDs for items used
+@setvar! 'Runebook' 8901
+@setvar! 'RecallRune' 7956
+
+// Create all timers
 if not timerexists '_harvest'
     createtimer '_harvest'
     settimer '_harvest' 99999
@@ -48,26 +35,25 @@ if not timerexists '_eleCastTimer'
     createtimer '_eleCasttimer'
     settimer '_eleCastTimer' 99999
 endif
-if not varexist packyDumps
-    setvar! packyDumps 0
+if not varexist 'packyDumps'
+    setvar! 'packyDumps' 0
 endif
 
-setvar! isGuarding 0
+setvar! 'isGuarding' 0
 
-#Set timers initially to get into while loop.
+// Set timers initially to get into while loop.
 settimer '_harvest' 0
 settimer '_checkweight' 0
-setvar! handled 1
+setvar! 'handled' 1
 
 while not dead
-   #CAST ELEMENTAL
-   if 'useSummons' == 1
-        #if we don't have an elemental we cast one.
-   while followers == usingPackiesAmount or followers < 4
-            if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
-                if mana > 40
+    if 'useSummons' == 1
+        // Cast elementals
+        while followers == 'usingPackiesAmount' or followers < 4
+            if counttype '3963' 'backpack' > 10 and counttype '3962' 'backpack' > 10 and counttype '3974' 'backpack' > 10 and counttype '3981' 'backpack' > 10
+                if mana > 49
                     if timer '_eleCastTimer' > 7000
-                        setvar! isGuarding 0
+                        setvar! 'isGuarding' 0
                         hotkey "Water Elemental"
                         settimer '_eleCastTimer' 0
                         settimer '_harvest' 0
@@ -78,9 +64,8 @@ while not dead
                     overhead "::: RECALLING NOW :::" 33
                     cast "recall"
                     waitfortarget 3000
-                    //Runebook:: name: "Runebook" id: 4
-                        if findtype 'Runebook' backpack
-                            targettype 'Runebook' backpack
+                    if findtype 'Runebook' backpack
+                        targettype 'Runebook' backpack
                         overhead "::: Recalled Out :::" 15
                         script 'M_BankController'
                     endif
@@ -109,13 +94,13 @@ while not dead
             settimer '_harvest' 0
         endwhile
         
-        #CAST SECOND ELEMENTAL
+        // Cast second elemental
         if timer '_recastElemental' > 300000
-            overhead 'IN ELE TIMER'
+            overhead '::: second elemental :::'
             while followers < 4
-                if counttype 'Blood Moss' 'backpack' > 10 and counttype 'Black Pearl%s%' 'backpack' > 10 and counttype 'Mandrake Root%s%' 'backpack' > 10 and counttype "Spider's Silk" 'backpack' > 10
+                if counttype '3963' 'backpack' > 10 and counttype '3962' 'backpack' > 10 and counttype '3974' 'backpack' > 10 and counttype '3981' 'backpack' > 10
                     if mana > 40 and timer '_eleCastTimer' > 7000
-                        setvar! isGuarding 0
+                        setvar! 'isGuarding' 0
                         hotkey "Water Elemental"
                         settimer '_eleCastTimer' 0
                         settimer '_harvest' 0
@@ -156,41 +141,39 @@ while not dead
             settimer '_recastElemental' 0
         endif
         
-        #TELL PETS TO GUARD
-        if isGuarding == 0
+        // Tell pets to guard
+        if 'isGuarding' == 0
             say "All Guard Me"
-            setvar! isGuarding 1
+            setvar! 'isGuarding' 1
         endif
     endif
     
-    #PICK BROKEN
+    // Pick breaks
     if insysmsg 'worn out your tool'
         overhead '::: You broke your pickaxe :::'
         wait 1000
         if rhandempty
-            setvar! handled 1
+            setvar! 'handled' 1
             settimer '_harvest' 0
             settimer '_checkweight' 0
         endif
     endif 
      
-    #PACKIE 
-    if diffweight <= 40
-        #switch to new packie if last is full
-        if packieDumps == 4
-            #remove from empty list and put on full list
-            if atlist emptyPackieList 0 as packie                
-                poplist emptyPackieList 'front'
-                pushlist fullPackieList packie 'back'
-                setvar packieDumps 0
+    // Packie handling
+    if diffweight <= 20
+        // Switch to new packie if last is full
+        if 'packieDumps' == 4
+            // Remove from empty list and put on full list
+            if atlist 'emptyPackieList' 0 as 'packie'                
+                poplist 'mptyPackieList' 'front'
+                pushlist 'fullPackieList' 'packie' 'back'
+                setvar 'packieDumps' 0
             endif
         endif
 
-        #DUMP TO PACKIE
+        // Dump to Packhorses
         if list emptyPackieList > 0
-            overhead "1"
             if atlist emptyPackieList 0 as thePack
-                overhead "2"
                 if packieDumps == 0
                     overhead "::: setting organizer :::"
                     organizer packDumpAgent 'set'
@@ -200,18 +183,24 @@ while not dead
                     overhead "::: First Dump on pack animal :::" 33
                     organizer packDumpAgent
                     setvar! packieDumps 1
-                else           
-                    if packieDumps == 3
+                else 
+                    if packieDumps == 5
+                        overhead "::: Sixth Dump on pack animal :::" 33
+                        organizer packDumpAgent
+                        setvar! packieDumps 6
+                    elseif packieDumps == 4
+                        overhead "::: Fifth Dump on pack animal :::" 33
+                        organizer packDumpAgent
+                        setvar! packieDumps 5         
+                    elseif packieDumps == 3
                         overhead "::: Fourth Dump on pack animal :::" 33
                         organizer packDumpAgent
                         setvar! packieDumps 4
-                    endif
-                    if packieDumps == 2
+                    elseif packieDumps == 2
                         overhead "::: Third Dump on pack animal :::" 33
                         organizer packDumpAgent
                         setvar! packieDumps 3
-                    endif
-                    if packieDumps == 1
+                    elseif packieDumps == 1
                         overhead "::: Second Dump on pack animal :::" 33
                         organizer packDumpAgent
                         setvar! packieDumps 2
@@ -219,7 +208,7 @@ while not dead
                 endif
             endif
         else
-            #Out of Packies
+            // All Packhorses are full
             overhead "::: PACKIES FULL :::" 55
             overhead "::: RECALLING NOW :::" 33
             cast "recall"
@@ -239,9 +228,8 @@ while not dead
         settimer '_harvest' 0     
     endif
     
-    #HARVEST
-    if handled == 1
-        #clearsysms
+    // Harvest loop
+    if 'handled' == 1
         if rhandempty
             if not findtype 3718 backpack
                 overhead "::: You are out of tools:::"
@@ -260,30 +248,30 @@ while not dead
                 endif
                 
             endif
-            if findtype 3718 backpack as tool
+            if findtype 3718 backpack as 'tool'
                 if timer '_equippedToolLast' > 3000
                     dclick 'tool'
                     overhead ":::equipped new tool:::"
                     settimer '_equippedToolLast' 0
                     wait 1000
                     settimer '_harvest' 0
-                    setvar!  handled 1
+                    setvar! 'handled' 1
                 endif
             endif                    
-        elseif diffweight >= 40
+        elseif diffweight >= 20
             wait 150
             #overhead "USING TOOL"
             hotkey 'Use item in Hand'
             wait 250
-            setvar! handled 0
+            setvar! 'handled' 0
         else
             # overhead "Too Heavy and Dump Failed"
         endif
     endif
     
-    #HANDLE RESULTS
-    while handled == 0
-        #Check for PK while in this loop!
+    // Handle results
+    while 'handled' == 0
+        // Check for PK while in this loop!
         if insysmsg "Now tracking:"
             overhead "::: RED FOUND :::" 55
             overhead "::: RECALLING NOW :::" 33
@@ -300,11 +288,10 @@ while not dead
                 script 'M_BankController'
             endif
         endif        
-        #overhead "RESULTS"
+
         if insysmsg "You do not see"
             overhead "::: node empty :::"
-            if useRails == 1
-                #overhead '::: moving :::' 55
+            if 'useRails' == 1
                 for 8
                     if atlist xCoord 0 as x
                         @setvar! xListEntry x
@@ -335,8 +322,6 @@ while not dead
                         endif
                     else            
                         if atlist moveList 0 as firstEntry
-                            #overhead xListEntry
-                            #overhead yListEntry
                             if firstEntry == 1
                                 overhead '::: moving north :::' 55
                                 walk 'north'
