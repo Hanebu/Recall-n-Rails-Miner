@@ -13,6 +13,14 @@ overhead "::: harvester :::"
 // IDs for items used
 @setvar! 'Runebook' 8901
 @setvar! 'RecallRune' 7956
+@setvar! 'BlackPearl' 3962
+@setvar! 'Bloodmoss' 3963
+@setvar! 'Garlic' 3972
+@setvar! 'Ginseng' 3973
+@setvar! 'MandrakeRoot' 3974
+@setvar! 'Nightshade' 3976
+@setvar! 'SpidersSilk' 3981
+@setvar! 'SulfurousAsh' 3980
 
 // Create all timers
 if not timerexists '_harvest'
@@ -50,11 +58,11 @@ while not dead
     if 'useSummons' == 1
         // Cast elementals
         while followers == 'usingPackiesAmount' or followers < 4
-            if counttype '3963' 'backpack' > 10 and counttype '3962' 'backpack' > 10 and counttype '3974' 'backpack' > 10 and counttype '3981' 'backpack' > 10
+            if counttype Bloodmoss 'backpack' > 10 and counttype MandrakeRoot 'backpack' > 10 and counttype SpidersSilk 'backpack' > 10
                 if mana > 49
                     if timer '_eleCastTimer' > 7000
                         setvar! 'isGuarding' 0
-                        hotkey "Water Elemental"
+                        hotkey "Earth Elemental"
                         settimer '_eleCastTimer' 0
                         settimer '_harvest' 0
                     endif
@@ -98,10 +106,10 @@ while not dead
         if timer '_recastElemental' > 300000
             overhead '::: second elemental :::'
             while followers < 4
-                if counttype '3963' 'backpack' > 10 and counttype '3962' 'backpack' > 10 and counttype '3974' 'backpack' > 10 and counttype '3981' 'backpack' > 10
+                if counttype Bloodmoss 'backpack' > 10 and counttype MandrakeRoot 'backpack' > 10 and counttype SpidersSilk 'backpack' > 10
                     if mana > 40 and timer '_eleCastTimer' > 7000
                         setvar! 'isGuarding' 0
-                        hotkey "Water Elemental"
+                        hotkey "Earth Elemental"
                         settimer '_eleCastTimer' 0
                         settimer '_harvest' 0
                      endif
@@ -162,15 +170,15 @@ while not dead
     // Packie handling
     if diffweight <= 20
         // Switch to new packie if last is full
-        if 'packieDumps' == 4
+        if 'packieDumps' == 6
             // Remove from empty list and put on full list
             if atlist 'emptyPackieList' 0 as 'packie'                
-                poplist 'mptyPackieList' 'front'
+                poplist 'emptyPackieList' 'front'
                 pushlist 'fullPackieList' 'packie' 'back'
                 setvar 'packieDumps' 0
             endif
         endif
-
+ 
         // Dump to Packhorses
         if list emptyPackieList > 0
             if atlist emptyPackieList 0 as thePack
@@ -182,27 +190,63 @@ while not dead
                     wait 1000
                     overhead "::: First Dump on pack animal :::" 33
                     organizer packDumpAgent
+                    while not insysmsg 'queued actions in'
+                        wait 50
+                        if insysmsg 'queued actions in'
+                            break
+                        endif
+                    endwhile
                     setvar! packieDumps 1
                 else 
                     if packieDumps == 5
                         overhead "::: Sixth Dump on pack animal :::" 33
                         organizer packDumpAgent
+                        while not insysmsg 'queued actions in'
+                            wait 50
+                            if insysmsg 'queued actions in'
+                                break
+                            endif
+                        endwhile
                         setvar! packieDumps 6
                     elseif packieDumps == 4
                         overhead "::: Fifth Dump on pack animal :::" 33
                         organizer packDumpAgent
+                        while not insysmsg 'queued actions in'
+                            wait 50
+                            if insysmsg 'queued actions in'
+                                break
+                            endif
+                        endwhile
                         setvar! packieDumps 5         
                     elseif packieDumps == 3
                         overhead "::: Fourth Dump on pack animal :::" 33
                         organizer packDumpAgent
+                        while not insysmsg 'queued actions in'
+                            wait 50
+                            if insysmsg 'queued actions in'
+                                break
+                            endif
+                        endwhile
                         setvar! packieDumps 4
                     elseif packieDumps == 2
                         overhead "::: Third Dump on pack animal :::" 33
                         organizer packDumpAgent
+                        while not insysmsg 'queued actions in'
+                            wait 50
+                            if insysmsg 'queued actions in'
+                                break
+                            endif
+                        endwhile
                         setvar! packieDumps 3
                     elseif packieDumps == 1
                         overhead "::: Second Dump on pack animal :::" 33
                         organizer packDumpAgent
+                        while not insysmsg 'queued actions in'
+                            wait 50
+                            if insysmsg 'queued actions in'
+                                break
+                            endif
+                        endwhile
                         setvar! packieDumps 2
                     endif
                 endif
