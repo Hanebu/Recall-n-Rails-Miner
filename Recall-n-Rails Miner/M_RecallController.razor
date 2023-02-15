@@ -10,6 +10,8 @@
 // Welcome message
 overhead "::: recall controller :::"
 
+wait 600
+
 // IDs for items used
 @setvar! Runebook 8901
 @setvar! RecallRune 7956
@@ -47,12 +49,12 @@ overhead "::: script has been reset :::" 77
 random railCount
 
 // Check that we have enough reags to do another run (recall and summons)
-if counttype Bloodmoss 'backpack' > 20 and counttype BlackPearl 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 20 and counttype SpidersSilk 'backpack' > 20  
+if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 20 and counttype SpidersSilk 'backpack' > 20  
     // If we dont have an elemental we cast one before leaving.
     if useSummons == 1
         while followers == usingPackiesAmount and followers < 4
         if mana > 40 or timer '_recastElemental' > 300000
-                hotkey "Water Elemental"
+            hotkey "Earth Elemental"
             wait 7000
             endif
         endwhile
