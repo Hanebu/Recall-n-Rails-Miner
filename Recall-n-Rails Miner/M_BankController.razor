@@ -37,6 +37,7 @@ while findtype 'iron ore' backpack as 'ore'
     dclick 'ore'
     wait 600
 endwhile
+wait 600
 
 // Smelt all ore from full packies 
 while list 'fullPackieList' > 0 
@@ -57,6 +58,7 @@ while list 'fullPackieList' > 0
         pushlist 'tempPackieList' 'packie' 'back'
     endif
 endwhile
+wait 600
 
 // Smelt all ore from partially full packies 
 while list 'emptyPackieList' > 0 
@@ -77,6 +79,7 @@ while list 'emptyPackieList' > 0
         pushlist 'tempPackieList' 'packie' 'back'
     endif    
 endwhile
+wait 600
     
 // Clear temp list and add all packies to empty list
 while list 'tempPackieList' > 0
@@ -88,9 +91,18 @@ endwhile
 
 // Dump ingots into Resource Stockpile
 if findtype 23034 'ground' -1 1 3 as 'stockpile'
+    overhead '::: dumping ingots :::'
     menu 'stockpile' 0
     waitfortarget 
     target 'self'
+    wait 600
+endif
+
+// Restock from Shelf
+if findtype 44998 'ground' -1 1 3 as 'shelf'
+    overhead '::: restocking :::'
+    menu 'shelf' 1
+    wait 600
 endif
 
 // Next recall spot
