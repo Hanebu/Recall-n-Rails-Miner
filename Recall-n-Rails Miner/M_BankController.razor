@@ -19,7 +19,10 @@ pause 600
 // ****************************************
 
 // Welcome message
-overhead "::: bank controller :::"
+if showWelcomeMessages == 1
+    overhead "::: bank controller :::"
+endif
+
 clearsysmsg 
 
 // Create temp pacly list to clear other lists and write values back
