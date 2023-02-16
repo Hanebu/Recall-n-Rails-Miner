@@ -67,7 +67,7 @@ while not dead
                         settimer '_harvest' 0
                     endif
                 endif
-                if insysmsg "Now tracking:"
+                if insysmsg "Now tracking:" or diffhits > 33
                     overhead "::: RED FOUND :::" 55
                     overhead "::: RECALLING NOW :::" 33
                     cast "recall"
@@ -113,7 +113,7 @@ while not dead
                         settimer '_eleCastTimer' 0
                         settimer '_harvest' 0
                      endif
-                     if insysmsg "Now tracking:"
+                     if insysmsg "Now tracking:" or diffhits > 33
                         overhead "::: RED FOUND :::" 55
                         overhead "::: RECALLING NOW :::" 33
                         cast "recall"
@@ -170,7 +170,7 @@ while not dead
     // Packie handling
     if diffweight <= 20
         // Switch to new packie if last is full
-        if 'packieDumps' == 6
+        if 'packieDumps' == 4
             // Remove from empty list and put on full list
             if atlist 'emptyPackieList' 0 as 'packie'                
                 poplist 'emptyPackieList' 'front'
@@ -190,40 +190,20 @@ while not dead
                     wait 1000
                     overhead "::: First Dump on pack animal :::" 33
                     organizer packDumpAgent
-                    while not insysmsg 'queued actions in'
-                        wait 50
+                    while not insysmsg 'queued actions in' and not insysmsg 'queued 1 item'
+                        wait 1000
                         if insysmsg 'queued actions in'
                             break
                         endif
                     endwhile
                     setvar! packieDumps 1
                 else 
-                    if packieDumps == 5
-                        overhead "::: Sixth Dump on pack animal :::" 33
-                        organizer packDumpAgent
-                        while not insysmsg 'queued actions in'
-                            wait 50
-                            if insysmsg 'queued actions in'
-                                break
-                            endif
-                        endwhile
-                        setvar! packieDumps 6
-                    elseif packieDumps == 4
-                        overhead "::: Fifth Dump on pack animal :::" 33
-                        organizer packDumpAgent
-                        while not insysmsg 'queued actions in'
-                            wait 50
-                            if insysmsg 'queued actions in'
-                                break
-                            endif
-                        endwhile
-                        setvar! packieDumps 5         
                     elseif packieDumps == 3
                         overhead "::: Fourth Dump on pack animal :::" 33
                         organizer packDumpAgent
-                        while not insysmsg 'queued actions in'
-                            wait 50
-                            if insysmsg 'queued actions in'
+                        while not insysmsg 'queued actions in' and not insysmsg 'queued 1 item'
+                            wait 1000
+                        if insysmsg 'queued actions in' or insysmsg 'queued 1 item'
                                 break
                             endif
                         endwhile
@@ -231,9 +211,9 @@ while not dead
                     elseif packieDumps == 2
                         overhead "::: Third Dump on pack animal :::" 33
                         organizer packDumpAgent
-                        while not insysmsg 'queued actions in'
-                            wait 50
-                            if insysmsg 'queued actions in'
+                        while not insysmsg 'queued actions in' and not insysmsg 'queued 1 item'
+                            wait 1000
+                            if insysmsg 'queued actions in' or insysmsg 'queued 1 item'
                                 break
                             endif
                         endwhile
@@ -241,9 +221,9 @@ while not dead
                     elseif packieDumps == 1
                         overhead "::: Second Dump on pack animal :::" 33
                         organizer packDumpAgent
-                        while not insysmsg 'queued actions in'
-                            wait 50
-                            if insysmsg 'queued actions in'
+                        while not insysmsg 'queued actions in' and not insysmsg 'queued 1 item'
+                            wait 1000
+                            if insysmsg 'queued actions in' or insysmsg 'queued 1 item'
                                 break
                             endif
                         endwhile
@@ -316,7 +296,7 @@ while not dead
     // Handle results
     while 'handled' == 0
         // Check for PK while in this loop!
-        if insysmsg "Now tracking:"
+        if insysmsg "Now tracking:" or diffhits > 33
             overhead "::: RED FOUND :::" 55
             overhead "::: RECALLING NOW :::" 33
             cast "recall"
@@ -475,8 +455,6 @@ while not dead
             script 'M_BankController'
         elseif insysmsg 'Organize Agent queued'
             overhead '::: Organizer Working :::' 55
-            while queued
-                endwhile
             pause 2000
             settimer '_harvest' 0
             settimer '_checkweight' 0
@@ -516,7 +494,7 @@ while not dead
             overhead "::: Entering Watch Mode :::" 55
             while not insysmsg 'captcha successful'
                 #Check for PK while in this loop!
-                if insysmsg "Now tracking:"
+                if insysmsg "Now tracking:" or diffhits > 33
                     overhead "::: RED FOUND :::" 55
                     overhead "::: RECALLING NOW :::" 33
                     cast "recall"
