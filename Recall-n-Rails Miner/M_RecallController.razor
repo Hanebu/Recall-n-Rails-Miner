@@ -79,6 +79,16 @@ if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 2
         gumpclose 4267467659
     endif
     
+    if useReflect == 1 and not findbuff 'Magic Reflection'
+        cast 'Magic Reflection'
+        wait 5000
+        if skill 'Inscription' > 79
+            cast 'Bless'
+            waitfortarget 
+            target 'self'
+        endif
+    endif
+    
     // Select run to do based on random. Recall and save which script we will do
     if findtype Runebook backpack as book
         overhead "found the runebook"
