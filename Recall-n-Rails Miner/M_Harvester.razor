@@ -198,7 +198,7 @@ while not dead
                     endwhile
                     setvar! packieDumps 1
                 else 
-                    elseif packieDumps == 3
+                    if packieDumps == 3
                         overhead "::: Fourth Dump on pack animal :::" 33
                         organizer packDumpAgent
                         while not insysmsg 'queued actions in' and not insysmsg 'queued 1 item'
