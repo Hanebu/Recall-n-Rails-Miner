@@ -90,115 +90,115 @@ if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 2
     endif
     
     // Select run to do based on random. Recall and save which script we will do
-    if findtype Runebook backpack as book
+    if findtype 8901 backpack as mybook
         overhead "found the runebook"
         if insysmsg "Random: 16"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 95
             setvar! theScript 16
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 15"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 89
             setvar! theScript 15
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 14"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 83
             setvar! theScript 14
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 13"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 77
             setvar! theScript 13
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 12"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 71
             setvar! theScript 12
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 11"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 65
             setvar! theScript 11
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 10"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 59
             setvar! theScript 10
             settimer 'recentlyTraveled' 0                                            
         elseif insysmsg "Random: 9"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 53
             setvar! theScript 9
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 8"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 47
             setvar theScript 8
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 7"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 41
             setvar! theScript 7
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 6"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 35
             setvar! theScript 6
             settimer 'recentlyTraveled' 0
          elseif insysmsg "Random: 5"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 29
             setvar! theScript 5
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 4"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 23
             setvar! theScript 4
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 3"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 17
             setvar! theScript 3
             settimer 'recentlyTraveled' 0
          elseif insysmsg "Random: 2"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 11
             setvar! theScript 2
             settimer 'recentlyTraveled' 0
         elseif insysmsg "Random: 1"            
-            dclick book
+            dclick mybook
             waitforgump any
             wait 250
             gumpresponse 5
@@ -364,7 +364,7 @@ if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 2
     // Run script based on the variable we saved earlier.
     // You must name these exactly as you have in your razor list.
     overhead theScript 55
-    if findtype Runebook backpack as runeBook
+    if findtype 8901 backpack as runeBook
         getlabel runeBook runeBookLabel
         if "M_Rune_Book_1" in runeBookLabel
             if theScript == 1
