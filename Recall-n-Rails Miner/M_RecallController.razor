@@ -39,6 +39,7 @@ if not timerexists '_recastElemental'
 endif
 
 // Reset our rail lists and get ready for next run
+clearsysmsg
 removelist firstRun
 removelist moveList
 removelist xCoord
@@ -47,7 +48,10 @@ setvar packieDumps 0
 overhead "::: script has been reset :::" 77
 
 // Get random number for finding next recall spot
-random railCount
+if useRandom == 1
+    random railCount
+endif
+    
 
 // Check that we have enough reags to do another run (recall and summons)
 if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 20 and counttype SpidersSilk 'backpack' > 20  
@@ -90,121 +94,261 @@ if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 2
     endif
     
     // Select run to do based on random. Recall and save which script we will do
-    if findtype 8901 backpack as mybook
+        if findtype Runebook backpack as book
         overhead "found the runebook"
-        if insysmsg "Random: 16"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 95
-            setvar! theScript 16
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 15"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 89
-            setvar! theScript 15
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 14"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 83
-            setvar! theScript 14
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 13"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 77
-            setvar! theScript 13
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 12"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 71
-            setvar! theScript 12
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 11"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 65
-            setvar! theScript 11
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 10"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 59
-            setvar! theScript 10
-            settimer 'recentlyTraveled' 0                                            
-        elseif insysmsg "Random: 9"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 53
-            setvar! theScript 9
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 8"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 47
-            setvar theScript 8
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 7"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 41
-            setvar! theScript 7
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 6"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 35
-            setvar! theScript 6
-            settimer 'recentlyTraveled' 0
-         elseif insysmsg "Random: 5"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 29
-            setvar! theScript 5
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 4"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 23
-            setvar! theScript 4
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 3"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 17
-            setvar! theScript 3
-            settimer 'recentlyTraveled' 0
-         elseif insysmsg "Random: 2"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 11
-            setvar! theScript 2
-            settimer 'recentlyTraveled' 0
-        elseif insysmsg "Random: 1"            
-            dclick mybook
-            waitforgump any
-            wait 250
-            gumpresponse 5
-            setvar! theScript 1
-            settimer 'recentlyTraveled' 0
-        endif     
+        if useRandom == 1
+            if insysmsg "Random: 16"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 95
+                setvar! theScript 16
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 15"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 89
+                setvar! theScript 15
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 14"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 83
+                setvar! theScript 14
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 13"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 77
+                setvar! theScript 13
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 12"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 71
+                setvar! theScript 12
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 11"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 65
+                setvar! theScript 11
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 10"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 59
+                setvar! theScript 10
+                settimer 'recentlyTraveled' 0                                            
+            elseif insysmsg "Random: 9"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 53
+                setvar! theScript 9
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 8"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 47
+                setvar theScript 8
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 7"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 41
+                setvar! theScript 7
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 6"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 35
+                setvar! theScript 6
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 5"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 29
+                setvar! theScript 5
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 4"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 23
+                setvar! theScript 4
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 3"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 17
+                setvar! theScript 3
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 2"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 11
+                setvar! theScript 2
+                settimer 'recentlyTraveled' 0
+            elseif insysmsg "Random: 1"            
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 5
+                setvar! theScript 1
+                settimer 'recentlyTraveled' 0
+            endif
+        else 
+            if currentRune == 16 and railCount == 16
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 95
+                setvar! theScript 16
+                settimer 'recentlyTraveled' 0
+                currentRune = 1
+            elseif currentRune == 15 and railCount >= 15
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 89
+                setvar! theScript 15
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 16
+            elseif currentRune == 14 and railCount >= 14
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 83
+                setvar! theScript 14
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 15
+            elseif currentRune == 13 and railCount >= 13
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 77
+                setvar! theScript 13
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 14
+            elseif currentRune == 12 and railCount >= 12
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 71
+                setvar! theScript 12
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 13
+            elseif currentRune == 11 and railCount >= 11
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 65
+                setvar! theScript 11
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 12
+            elseif currentRune == 10 and railCount >= 10
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 59
+                setvar! theScript 10
+                settimer 'recentlyTraveled' 0       
+                setvar currentRune 11                                     
+            elseif currentRune == 9 and railCount >= 9
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 53
+                setvar! theScript 9
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 10
+            elseif currentRune == 8 and railCount >= 8
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 47
+                setvar theScript 8
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 9
+            elseif currentRune == 7 and railCount >= 7
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 41
+                setvar! theScript 7
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 8
+            elseif currentRune == 6 and railCount >= 6
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 35
+                setvar! theScript 6
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 7
+            elseif currentRune == 5  and railCount >= 5
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 29
+                setvar! theScript 5
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 6
+            elseif currentRune == 4 and railCount >= 4
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 23
+                setvar! theScript 4
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 5
+            elseif currentRune == 3 and railCount >= 3
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 17
+                setvar! theScript 3
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 4
+            elseif currentRune == 2 and railCount >= 2
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 11
+                setvar! theScript 2
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 3
+            elseif currentRune <= 1 and railCount >= 1
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 5
+                setvar! theScript 1
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 2
+            else
+                dclick book
+                waitforgump any
+                wait 250
+                gumpresponse 5
+                setvar! theScript 1
+                settimer 'recentlyTraveled' 0
+                setvar currentRune 2
+            endif
+        endif
     endif
 
     // Wait while recently traveled
@@ -364,7 +508,7 @@ if counttype Bloodmoss 'backpack' > 20 and counttype MandrakeRoot 'backpack' > 2
     // Run script based on the variable we saved earlier.
     // You must name these exactly as you have in your razor list.
     overhead theScript 55
-    if findtype 8901 backpack as runeBook
+    if findtype Runebook backpack as runeBook
         getlabel runeBook runeBookLabel
         if "M_Rune_Book_1" in runeBookLabel
             if theScript == 1
